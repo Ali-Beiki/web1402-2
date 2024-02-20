@@ -1,58 +1,79 @@
+//node .\03-f.js create x.txt salamSALAMsalam
+//node .\03-f.js append x.txt salamSALAMsalam
+//node .\03-f.js delete x.txt
+//node .\03-f.js delete myDirName
+//node .\03-f.js copy x.txt y.txt  
+
+
 let fs = require('fs');
-let data=process.argv[3];
+let command = process.argv[2];
+let name = process.argv[3];
+let arg4 = process.argv[4];
 
-//Callbac finc
-function Callback(err){
-    if (err){
-        console.log("ERROR : ",err)
-    }else{
-        console.log("File Saived !")
-    }
-}
 
-//Delet Callbac
-function deletCallbak(err){
-    if (err){
 
-        if(err.code ==='EPERM'){//for folder
-            fs.rmdir(process.argv[2],callback)
-        }else{
-            console.log("ERROR : ",err)
+function unlinkCallback(err) {
+    if(err){
+        if(err.code === 'EPERM'){
+            fs.rmdir(name, rmdirCallback); 
         }
-        
-    }else{
-        console.log("File Delet !")
+        else{
+            console.log('ERR: ', err)
+        }
+    }
+    else{
+        console.log("unlink  successfull.")
     }
 }
 
-//Copy Callbac
-function copyCallback(err){
-    if (err){
-        console.log("ERROR : ",err)
-    }else{
-        console.log("Copy Succsesfull !")
+function rmdirCallback(err){
+    if(err){
+        console.log('ERR: ', err);
+    }
+    else{
+        console.log('rmdir successfull')
     }
 }
 
-switch (process.argv[2]) {
-
-    case 'create'://
-            fs.writeFile(process.argv[2],data,Callback)
-        break;
-
-    case 'append' : //
-        fs.appendFile(process.argv[2],data,Callback)
-        break;
-        
-    case 'delete' : //
-        fs.unlink(process.argv[2],deletCallbak)
-        break; 
-
-    case 'copy' : //
-        fs.copyFile(process.argv[2],process.argv[3],copyCallback)
-        break;      
-
-
-    default:
-        break;
+function Callback(err){
+    if(err){
+        console.log('ERR: ', err);
+    }
+    else{
+        console.log(command+' successfill')
+    }
 }
+
+// switch(command){
+//     case 'create':
+//         fs.writeFile(name, arg4, writeFileCallback); 
+//         break;
+//     case 'append':
+//         fs.appendFile(name, arg4, appendFileCallback); 
+//         break;
+//     case 'delete':
+//         fs.unlink(name, unlinkCallback);
+//         break;
+//     case 'copy':
+//         fs.copyFile(name, arg4, copyFileCallback); 
+//         break;
+//     default:
+//         console.log('Command not found');
+// }
+
+let commands = {
+    create: function(){
+        fs.writeFile(name, arg4, Callback);
+    },
+    append: function(){
+        fs.appendFile(name, arg4, Callback); 
+    },
+    delete: function(){
+        fs.unlink(name, unlinkCallback);
+    },
+    copy: function(){
+        fs.copyFile(name, arg4, Callback);
+    }
+}
+
+commands[command]();
