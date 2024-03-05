@@ -11,62 +11,9 @@ let command = process.argv[2];
 let name = process.argv[3];
 let arg4 = process.argv[4];
 
-function writeFileCallback(err) {
-    if(err){
-        console.log('ERR: ', err);
-    }
-    else{
-        console.log('writeFile  successfull.');
-    }
-}
-
-function appendFileCallback(err) {
-    if(err){
-        console.log('ERR: ', err);
-    }
-    else{
-        console.log('append  successfull.');
-    }
-}
-
-function unlinkCallback(err) {
-    if(err){
-        if(err.code === 'EPERM'){
-            fs.rmdir(name, rmdirCallback); 
-        }
-        else{
-            console.log('ERR: ', err)
-        }
-    }
-    else{
-        console.log("unlink  successfull.")
-    }
-}
-
-function rmdirCallback(err){
-    if(err){
-        console.log('ERR: ', err);
-    }
-    else{
-        console.log('rmdir successfull')
-    }
-}
-
-function copyFileCallback(err){
-    if(err){
-        console.log('ERR: ', err);
-    }
-    else{
-        console.log('copyFile successfill')
-    }
-}
-
 let messages ={
-    copy: 'copyFile successfull',
-    append: 'append  successfull.',
-    create: 'writeFile  successfull.',
-    read:"read file successfull",
-    createR:"Save Recorde Successfull"
+    createR:"Save Recorde Successfull",
+    readR:"Read Recorde Successfull",
 }
 
 function fsCallback(err){
@@ -78,32 +25,8 @@ function fsCallback(err){
     }
 }
 
-function readCallback(err,data){
-    if (err) {
-        console.error(err);
-    }
-    else{
-        console.log(messages[command])
-        console.log(data);
-    }
+
       
-}
-// switch(command){
-//     case 'create':
-//         fs.writeFile(name, arg4, writeFileCallback); 
-//         break;
-//     case 'append':
-//         fs.appendFile(name, arg4, appendFileCallback); 
-//         break;
-//     case 'delete':
-//         fs.unlink(name, unlinkCallback);
-//         break;
-//     case 'copy':
-//         fs.copyFile(name, arg4, copyFileCallback); 
-//         break;
-//     default:
-//         console.log('Command not found');
-// }
 
 
 let commands = {
@@ -131,6 +54,7 @@ let commands = {
             }else{
                 fileData =JSON.parse(fileData)
                 console.log(fileData.records[process.argv[3]])
+                console.log(messages[command])
             }
         })
     }
