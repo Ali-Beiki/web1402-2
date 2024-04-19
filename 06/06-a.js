@@ -121,13 +121,29 @@ async function redisupdate() {
         .on("error", (err) => console.log("Redis Client Error", err))
         .connect();
     try {
-        await client.set(name,arg4);
+        await client.set(name, arg4);
         await client.disconnect(); // یا client.end()
     } catch (error) {
-        console.log("xxx :", error);
+        console.log("ERROR :", error);
     }
 }
 
+async function redisRead() {
+    let result;
+    const client = await redis
+        .createClient({
+            url: "redis://127.0.0.1:6379",
+        })
+        .on("error", (err) => console.log("Redis Client Error", err))
+        .connect();
+    try {
+        result = await client.get(name);
+        await client.disconnect(); // یا client.end()
+    } catch (error) {
+        console.log("ERROR :", error);
+    }
+    console.log(result);
+}
 async function redisupdate() {}
 
 let commands = {
@@ -152,6 +168,7 @@ let commands = {
     rediscreate: rediscreate,
     redisdelete: redisdelete,
     redisupdate: redisupdate,
+    redisRead: redisRead,
 };
 
 commands[command]();
