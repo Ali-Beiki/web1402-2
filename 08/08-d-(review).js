@@ -5,6 +5,7 @@ server.listen(port);
 console.log("Server is running on port:" + port);
 
 let httpControllers = require('./httpControllers');
+let commandlineControllers = require('./commandlineControllers');
         
 function requestHandler(request, response){
     console.log('request:', request.url);
@@ -46,6 +47,23 @@ function requestHandler(request, response){
         },
         copy: function(){
             httpControllers.copyFile(request, response);
+        }
+    }
+
+    commands[command]();
+}
+
+if(process.argv[2]){
+    let command = process.argv[2];
+
+    let commands = {
+        page1: function(){
+            commandlineControllers.text();
+        },
+        create: function(){
+            let name = process.argv[3];
+            let body = process.argv[4];
+            commandlineControllers.create(name, body);
         }
     }
 
