@@ -1,15 +1,14 @@
 let fs = require("fs");
 
-function createF(filename,bodyText){
+function createF(filename, bodyText) {
     fs.writeFile(filename, bodyText, Callback);
 }
 
-
 function Callback(err) {
     if (err) {
-        console.log("ERR: ", err);
+        console.log("ERR in createFile: ", err);
     } else {
-        console.log("successfull.");
+        console.log("createFile successfull.");
     }
 }
 
